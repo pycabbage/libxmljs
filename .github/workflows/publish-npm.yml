@@ -3,14 +3,14 @@ name: Publish to NPM
 on:
   push:
     tags:
-      - '*'
+      - "*"
 
 jobs:
   publish:
     strategy:
       matrix:
-        node-version: [ 16 ]
-        os: [ ubuntu-latest ]
+        node-version: [16]
+        os: [ubuntu-latest]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@master
@@ -21,5 +21,6 @@ jobs:
           node-version: ${{ matrix.node-version }}
           registry-url: https://registry.npmjs.org
       - run: npm publish
+        if: false
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

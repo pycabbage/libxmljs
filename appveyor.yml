@@ -3,17 +3,10 @@ environment:
   github_release_token:
     secure: BmLH38W8mblb+oGknCuf1j+Rd9blRl4eu2Kv4sCEmoZ5Z0eWkChTmRipndmcBPEA
   matrix:
-    - nodejs_version: 4
-      npm_version: 4.0.3
-    - nodejs_version: 5
-      npm_version: 4.0.3
-    - nodejs_version: 6
-    - nodejs_version: 7
-    - nodejs_version: 8
-    - nodejs_version: 9
-    - nodejs_version: 10
+    - nodejs_version: 14
     - nodejs_version: 16
-      npm_version: 7.21.1
+    - nodejs_version: 18
+    - nodejs_version: 19
 
 platform:
   - x86
@@ -32,7 +25,7 @@ install:
   - npm config set python C:\Python27\python.exe
   - npm install -g npm@%npm_version%
   - npm --version
-  - npm install -g node-pre-gyp@0.6.37 --production
+  - npm install -g @mapbox/node-pre-gyp --production
 
   # work around an issue with node-gyp v3.3.1 and node 4x
   # https://github.com/nodejs/node-gyp/issues/921
