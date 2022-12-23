@@ -8,7 +8,7 @@ on:
       - "*"
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: ${{ github.workflow }}-${{ github.ref }}-${{ github.event }}
   cancel-in-progress: true
 
 jobs:
@@ -21,13 +21,12 @@ jobs:
           - 16
           - 18
           - 19
-        os: [ubuntu-latest, macos-latest, windows-2019]
+        os: [ubuntu-latest]
+        # os: [ubuntu-latest, macos-latest, windows-2019]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@master
-        with:
-          fetch-depth: 1
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
           registry-url: https://registry.npmjs.org
@@ -41,12 +40,17 @@ jobs:
 
           npm install --build-from-source
           node-pre-gyp package 2>&1
-      - name: Upload release binary
-        uses: alexellis/upload-assets@0.3.0
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
         with:
-          asset_paths: '["./build/stage/pycabbage/libxmljs/releases/download/**/*.tar.gz"]'
+          name: ${{ matrix.os }}-node${{ matrix.node-version }}
+          path: "build/stage/pycabbage/libxmljs/releases/download/**/*.tar.gz"
+      # - name: Upload release binary
+      #   uses: alexellis/upload-assets@0.4.0
+      #   env:
+      #     GITHUB_TOKEN: ${{ github.token }}
+      #   with:
+      #     asset_paths: '["./build/stage/pycabbage/libxmljs/releases/download/**/*.tar.gz"]'
   upload-arm-builds:
     strategy:
       fail-fast: false
@@ -58,9 +62,7 @@ jobs:
           - 19
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
-        with:
-          fetch-depth: 1
+      - uses: actions/checkout@v3
       - name: List files
         run: ls -l
       - uses: uraimo/run-on-arch-action@v2
@@ -97,9 +99,14 @@ jobs:
             npm install --build-from-source --unsafe-perm
             node-pre-gyp package 2>&1
 
-      - name: Upload release binary
-        uses: alexellis/upload-assets@0.3.0
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
         with:
-          asset_paths: '["./build/stage/pycabbage/libxmljs/releases/download/**/*.tar.gz"]'
+          name: ${{ matrix.os }}-node${{ matrix.node-version }}-arm
+          path: "build/stage/pycabbage/libxmljs/releases/download/**/*.tar.gz"
+      # - name: Upload release binary
+      #   uses: alexellis/upload-assets@0.3.0
+      #   env:
+      #     GITHUB_TOKEN: ${{ github.token }}
+      #   with:
+      #     asset_paths: '["./build/stage/pycabbage/libxmljs/releases/download/**/*.tar.gz"]'
