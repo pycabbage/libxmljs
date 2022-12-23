@@ -2,6 +2,8 @@ name: Upload Assets to GitHub
 
 on:
   push:
+    branches:
+      - "*"
     tags:
       - "*"
 
