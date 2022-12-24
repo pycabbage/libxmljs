@@ -44,6 +44,7 @@ jobs:
         run: |
           docker run --name libxmljs_builder_container -d libxmljs_builder:latest
           docker cp libxmljs_builder_container:/dist/ .
+          docker stop -t 5 libxmljs_builder_container
           docker rm libxmljs_builder_container
 
       - name: list files
