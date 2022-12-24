@@ -33,12 +33,11 @@ jobs:
       - uses: docker/build-push-action@v3
         with:
           context: .
-          pull: true
-          push: true
           cache-to: type=gha
           cache-from: type=gha
           build-args: |
             NODE_VERSION=${{ matrix.node-version }}
+
       # - uses: actions/setup-node@v3
       #   with:
       #     node-version: ${{ matrix.node-version }}
