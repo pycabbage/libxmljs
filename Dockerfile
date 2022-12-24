@@ -1,6 +1,8 @@
 FROM ubuntu:jammy
 ARG NODE_VERSION
 
+SHELL [ "/bin/bash", "-c" ]
+
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt update
 RUN apt install -y curl --no-install-recommends
@@ -9,7 +11,7 @@ RUN echo insecure >> ~/.curlrc && \
 
 RUN \
   curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash && \
-  bash ~/.bashrc
+  . ~/.bashrc
 RUN nvm install $NODE_VERSION
 
 COPY . /libxmljs
