@@ -16,7 +16,7 @@ jobs:
       matrix:
         # node-version: [18]
         node-version: [14, 16, 18, 19]
-        arch: [ amd64, arm64v8, arm32v7, i386 ]
+        arch: [ amd64, arm64v8, arm32v7 ]
     steps:
       - uses: actions/checkout@v3
 
@@ -86,7 +86,7 @@ jobs:
 
       - name: copy files
         run: |
-          # mkdir -p ./dist
+          mkdir -p ./dist
           cp -r ./build/stage/pycabbage/libxmljs/releases/download/*/*.tar.gz ./dist/
           ls ./dist/
 

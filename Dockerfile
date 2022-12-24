@@ -38,7 +38,7 @@ RUN source $NVM_DIR/nvm.sh && yarn install --frozen-lockfile
 RUN source $NVM_DIR/nvm.sh && yarn build && yarn dist
 # RUN source $NVM_DIR/nvm.sh && $(yarn global bin)/node-pre-gyp build package --build-from-source --fallback-to-build
 RUN ls -lR build/stage/pycabbage/libxmljs/releases/download/
-RUN sudo cp -r build/stage/pycabbage/libxmljs/releases/download/*/*.tar.gz /dist/
+RUN sudo mkdir /dist/ && sudo cp -r build/stage/pycabbage/libxmljs/releases/download/*/*.tar.gz /dist/
 
 USER root
 CMD while :; do sleep 3600; done
