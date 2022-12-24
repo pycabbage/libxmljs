@@ -2,7 +2,7 @@ FROM ubuntu:jammy
 ARG USER=build
 ARG HOME=/home/$USER
 
-SHELL ["/bin/bash", "-o", "pipefail", "-e", "-u", "-x", "-c"]
+SHELL ["/bin/bash", "-o", "pipefail", "-e", "-u", "-c"]
 ENV DEBIAN_FRONTEND noninteractive
 ENV BASH_ENV ~/.bashrc
 
@@ -25,10 +25,10 @@ ARG NODE_VERSION
 RUN source $NVM_DIR/nvm.sh && \
   nvm install $NODE_VERSION && \
   npm i -g npm@latest yarn@latest
-ENV PATH $PATH:$(npm -g bin):$($(npm -g bin)/yarn global bin)
+# ENV PATH $PATH:$(npm -g bin):$($(npm -g bin)/yarn global bin)
 
 COPY --chown=$USER . $HOME/libxmljs
 WORKDIR $HOME/libxmljs
-RUN PATH=$PATH:$(npm -g bin):$($(npm -g bin)/yarn global bin) yarn global add @mapbox/node-pre-gyp node-gyp
-RUN PATH=$PATH:$(npm -g bin):$($(npm -g bin)/yarn global bin) yarn install --frozen-lockfile
-RUN PATH=$PATH:$(npm -g bin):$($(npm -g bin)/yarn global bin) node-pre-gyp build package --build-from-source --fallback-to-build
+RUN source $NVM_DIR/nvm.sh && yarn global add @mapbox/node-pre-gyp node-gyp
+RUN source $NVM_DIR/nvm.sh && yarn install --frozen-lockfile
+RUN source $NVM_DIR/nvm.sh && node-pre-gyp build package --build-from-source --fallback-to-build
