@@ -27,6 +27,7 @@ RUN set +x && \
   set -x && \
   nvm install $NODE_VERSION && \
   npm i -g npm@latest yarn@latest
+ENV PATH $PATH:$(npm -g bin):$($(npm -g bin)/yarn global bin)
 
 COPY --chown=$USER . $HOME/libxmljs
 WORKDIR $HOME/libxmljs
