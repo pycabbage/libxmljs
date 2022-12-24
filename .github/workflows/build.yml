@@ -15,7 +15,7 @@ jobs:
       fail-fast: false
       matrix:
         node-version:
-          - 14
+          - 18
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
@@ -24,7 +24,8 @@ jobs:
           cache: "npm"
       - name: Build binary
         run: |
-          npm i @mapbox/node-pre-gyp node-gyp -g
+          npm i @mapbox/node-pre-gyp node-gyp yarn@latest -g
+          yarn install --frozen-lockfile
           node-pre-gyp rebuild --build-from-source --fallback-to-build
       - name: list files
         run: ls -lR build/stage/pycabbage/libxmljs/releases/download/
