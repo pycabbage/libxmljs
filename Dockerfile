@@ -7,7 +7,8 @@ ENV DEBIAN_FRONTEND noninteractive
 ENV BASH_ENV ~/.bashrc
 
 RUN apt update
-RUN apt install -y curl sudo --no-install-recommends
+RUN echo y | unminimize
+RUN apt install -y curl sudo python3 build-essential --no-install-recommends
 
 RUN useradd -m -s /bin/bash $USER
 RUN echo "$USER ALL=NOPASSWD: ALL" >> /etc/sudoers
