@@ -26,6 +26,6 @@ jobs:
         run: |
           npm i @mapbox/node-pre-gyp node-gyp yarn@latest -g
           yarn install --frozen-lockfile
-          node-pre-gyp rebuild --build-from-source --fallback-to-build
+          node-pre-gyp build package --build-from-source --fallback-to-build
       - name: list files
         run: ls -lR build/stage/pycabbage/libxmljs/releases/download/
