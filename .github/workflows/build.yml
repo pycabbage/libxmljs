@@ -1,0 +1,30 @@
+name: Build
+
+on:
+  push:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}-${{ github.event }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-22.04
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version:
+          - 14
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+      - name: Build binary
+        run: |
+          npm i @mapbox/node-pre-gyp node-gyp -g
+          node-pre-gyp rebuild --build-from-source --fallback-to-build
+      - name: list files
+        run: ls -lR build/stage/pycabbage/libxmljs/releases/download/
