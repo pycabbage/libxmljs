@@ -14,8 +14,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version:
-          - 18
+        node-version: [14, 16, 18, 19]
+        arch: [ "amd64", "arm64", "386"]
     steps:
       - uses: actions/checkout@v3
 
@@ -33,6 +33,7 @@ jobs:
       - uses: docker/build-push-action@v3
         with:
           context: .
+          platforms: linux/${{ matrix.arch }}
           cache-to: type=gha
           cache-from: type=gha
           load: true
@@ -53,5 +54,5 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
-          name: node${{ matrix.node-version }}
+          name: node${{ matrix.node-version }}-${{ matrix.arch }}
           path: "dist/**/*.tar.gz"
