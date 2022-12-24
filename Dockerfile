@@ -22,15 +22,13 @@ RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | b
 ARG NVM_DIR=$HOME/.nvm
 ARG NODE_VERSION
 
-RUN set +x && \
-  source $NVM_DIR/nvm.sh && \
-  set -x && \
+RUN source $NVM_DIR/nvm.sh && \
   nvm install $NODE_VERSION && \
   npm i -g npm@latest yarn@latest
 ENV PATH $PATH:$(npm -g bin):$($(npm -g bin)/yarn global bin)
 
 COPY --chown=$USER . $HOME/libxmljs
 WORKDIR $HOME/libxmljs
-RUN yarn global add @mapbox/node-pre-gyp node-gyp
-RUN yarn install --frozen-lockfile
-RUN node-pre-gyp build package --build-from-source --fallback-to-build
+RUN PATH=$PATH:$(npm -g bin):$($(npm -g bin)/yarn global bin) yarn global add @mapbox/node-pre-gyp node-gyp
+RUN PATH=$PATH:$(npm -g bin):$($(npm -g bin)/yarn global bin) yarn install --frozen-lockfile
+RUN PATH=$PATH:$(npm -g bin):$($(npm -g bin)/yarn global bin) node-pre-gyp build package --build-from-source --fallback-to-build
