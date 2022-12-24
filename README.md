@@ -5,9 +5,17 @@ fork of [libxmljs/libxmljs](https://github.com/libxmljs/libxmljs)
 
 LibXML bindings for [node.js](http://nodejs.org/)
 
+## Installation
+
+```bash
+npm install git+https://github.com/pycabbage/libxmljs.git
+```
+
+## Usage
+
 ```javascript
-var libxmljs = require("libxmljs");
-var xml =  '<?xml version="1.0" encoding="UTF-8"?>' +
+const libxmljs = require("libxmljs");
+const xml =  '<?xml version="1.0" encoding="UTF-8"?>' +
            '<root>' +
                '<child foo="bar">' +
                    '<grandchild baz="fizbuzz">grandchild content</grandchild>' +
@@ -15,15 +23,15 @@ var xml =  '<?xml version="1.0" encoding="UTF-8"?>' +
                '<sibling>with content!</sibling>' +
            '</root>';
 
-var xmlDoc = libxmljs.parseXml(xml);
+const xmlDoc = libxmljs.parseXml(xml);
 
 // xpath queries
-var gchild = xmlDoc.get('//grandchild');
+const gchild = xmlDoc.get('//grandchild');
 
 console.log(gchild.text());  // prints "grandchild content"
 
-var children = xmlDoc.root().childNodes();
-var child = children[0];
+const children = xmlDoc.root().childNodes();
+const child = children[0];
 
 console.log(child.attr('foo').value()); // prints "bar"
 ```
@@ -39,11 +47,11 @@ Check out the wiki [http://github.com/libxmljs/libxmljs/wiki](http://github.com/
 
 See the [examples](https://github.com/libxmljs/libxmljs/tree/master/examples) folder.
 
-## Installation via [npm](https://npmjs.org)
+<!-- ## Installation via [npm](https://npmjs.org)
 
 ```shell
 npm install libxmljs
-```
+``` -->
 
 ## Contribute
 
