@@ -1,5 +1,5 @@
 ARG ARCH=amd64
-FROM --platform=$ARCH ubuntu:jammy
+FROM $ARCH/ubuntu:latest
 ARG USER=build
 ARG HOME=/home/$USER
 

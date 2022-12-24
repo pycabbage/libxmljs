@@ -14,8 +14,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: [14, 16, 18, 19]
-        arch: [ "amd64", "arm64", "386"]
+        node-version: [18]
+        # node-version: [14, 16, 18, 19]
+        arch: [ amd64, arm64v8, arm32v7, i386 ]
     steps:
       - uses: actions/checkout@v3
 
@@ -33,13 +34,13 @@ jobs:
       - uses: docker/build-push-action@v3
         with:
           context: .
-          platforms: linux/${{ matrix.arch }}
           cache-to: type=gha
           cache-from: type=gha
           load: true
           tags: libxmljs_builder:latest
           build-args: |
             NODE_VERSION=${{ matrix.node-version }}
+            ARCH=${{ matrix.arch }}
 
       - name: Copy built files from container to host
         run: |
@@ -56,3 +57,14 @@ jobs:
         with:
           name: node${{ matrix.node-version }}-${{ matrix.arch }}
           path: "dist/**/*.tar.gz"
+  publish:
+    name: Publish built artifact
+    runs-on: ubuntu-latest
+    needs: [ build ]
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: node*-*
+          path: .
+      - name: list files
+        run: ls -lR ./
