@@ -1,4 +1,5 @@
-FROM ubuntu:jammy
+ARG ARCH=amd64
+FROM --platform=$ARCH ubuntu:jammy
 ARG USER=build
 ARG HOME=/home/$USER
 
@@ -26,11 +27,16 @@ ARG NODE_VERSION
 RUN source $NVM_DIR/nvm.sh && \
   nvm install $NODE_VERSION && \
   npm i -g npm@latest yarn@latest
-# ENV PATH $PATH:$(npm -g bin):$($(npm -g bin)/yarn global bin)
+RUN source $NVM_DIR/nvm.sh && yarn global add @mapbox/node-pre-gyp node-gyp
 
 COPY --chown=$USER . $HOME/libxmljs
+
 WORKDIR $HOME/libxmljs
-RUN source $NVM_DIR/nvm.sh && yarn global add @mapbox/node-pre-gyp node-gyp
+RUN rm -fr ./node_modules/
 RUN source $NVM_DIR/nvm.sh && yarn install --frozen-lockfile
 RUN source $NVM_DIR/nvm.sh && $(yarn global bin)/node-pre-gyp build package --build-from-source --fallback-to-build
 RUN ls -lR build/stage/pycabbage/libxmljs/releases/download/
+RUN sudo cp -r build/stage/pycabbage/libxmljs/releases/download /dist
+
+USER root
+CMD while :; do sleep 3600; done

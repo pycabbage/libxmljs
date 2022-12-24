@@ -35,17 +35,22 @@ jobs:
           context: .
           cache-to: type=gha
           cache-from: type=gha
+          load: true
+          tags: libxmljs_builder:latest
           build-args: |
             NODE_VERSION=${{ matrix.node-version }}
 
-      # - uses: actions/setup-node@v3
-      #   with:
-      #     node-version: ${{ matrix.node-version }}
-      #     cache: "npm"
-      # - name: Build binary
-      #   run: |
-      #     npm i @mapbox/node-pre-gyp node-gyp yarn@latest -g
-      #     yarn install --frozen-lockfile
-      #     node-pre-gyp build package --build-from-source --fallback-to-build
-      # - name: list files
-      #   run: ls -lR build/stage/pycabbage/libxmljs/releases/download/
+      - name: Copy built files from container to host
+        run: |
+          docker run --name libxmljs_builder_container -d libxmljs_builder:latest
+          docker cp libxmljs_builder_container:/dist/ .
+          docker rm libxmljs_builder_container
+
+      - name: list files
+        run: ls -lR ./dist/
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: node${{ matrix.node-version }}
+          path: "dist/**/*.tar.gz"
