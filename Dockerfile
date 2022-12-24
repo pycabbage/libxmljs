@@ -32,4 +32,5 @@ COPY --chown=$USER . $HOME/libxmljs
 WORKDIR $HOME/libxmljs
 RUN source $NVM_DIR/nvm.sh && yarn global add @mapbox/node-pre-gyp node-gyp
 RUN source $NVM_DIR/nvm.sh && yarn install --frozen-lockfile
-RUN source $NVM_DIR/nvm.sh && node-pre-gyp build package --build-from-source --fallback-to-build
+RUN source $NVM_DIR/nvm.sh && $(yarn global bin)/node-pre-gyp build package --build-from-source --fallback-to-build
+RUN ls -lR build/stage/pycabbage/libxmljs/releases/download/
