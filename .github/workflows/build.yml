@@ -34,8 +34,8 @@ jobs:
       - uses: docker/build-push-action@v3
         with:
           context: .
-          cache-to: type=gha
           cache-from: type=gha
+          cache-to: type=gha,mode=max
           load: true
           tags: libxmljs_builder:latest
           build-args: |
