@@ -16,6 +16,8 @@
   "version": "0.19.10",
   "scripts": {
     "install": "node-gyp configure && node-pre-gyp install --fallback-to-build --loglevel http",
+    "build": "node-pre-gyp build --build-from-source --fallback-to-build",
+    "dist": "node-pre-gyp package",
     "test": "node --expose_gc ./node_modules/.bin/nodeunit test"
   },
   "repository": {

@@ -8,14 +8,14 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build:
+  build-linux:
     name: Build
     runs-on: ubuntu-22.04
     strategy:
       fail-fast: false
       matrix:
-        node-version: [18]
-        # node-version: [14, 16, 18, 19]
+        # node-version: [18]
+        node-version: [14, 16, 18, 19]
         arch: [ amd64, arm64v8, arm32v7, i386 ]
     steps:
       - uses: actions/checkout@v3
@@ -55,12 +55,50 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
-          name: node${{ matrix.node-version }}-${{ matrix.arch }}
+          name: node${{ matrix.node-version }}-linux-${{ matrix.arch }}
+          path: "dist/**/*.tar.gz"
+  build-win-darwin:
+    name: Build (win,darwin)
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [14, 16, 18, 19]
+        os: [macos-latest, windows-2019]
+
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies
+        run: |
+          npm i -g yarn@latest
+          yarn install
+
+      - name: Build
+        run: |
+          yarn build
+          yarn dist
+
+      - name: copy files
+        run: |
+          # mkdir -p ./dist
+          cp -r ./build/stage/pycabbage/libxmljs/releases/download/*/*.tar.gz ./dist/
+          ls ./dist/
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: node${{ matrix.node-version }}-${{ matrix.os }}
           path: "dist/**/*.tar.gz"
   publish:
     name: Publish built artifact
     runs-on: ubuntu-latest
-    needs: [ build ]
+    needs: [ build-linux, build-win-darwin ]
     steps:
       - uses: actions/download-artifact@v3
         with:
