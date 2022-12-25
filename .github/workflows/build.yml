@@ -14,7 +14,6 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # node-version: [18]
         node-version: [14, 16, 18, 19]
         arch: [ amd64, arm64v8, arm32v7 ]
     env:
@@ -114,7 +113,7 @@ jobs:
     name: Publish built artifact
     runs-on: ubuntu-latest
     needs: [ build-linux, build-win-darwin ]
-    if: startsWith(github.ref, 'refs/tags/')
+    if: contains(github.event.head_commit.message, '[release]')
     steps:
       - uses: actions/checkout@v3
       - uses: actions/download-artifact@v3
@@ -125,8 +124,11 @@ jobs:
           mkdir ./dist/
           cp ./node*/*.tar.gz ./dist/
           ls -lR ./dist/
+      - name: get tag
+        run: echo "package_version=v$(jq -j .version < package.json)" >> $GITHUB_ENV
       - name: Publish release
         uses: softprops/action-gh-release@v1
         with:
           draft: true
+          tag_name: ${{ env.package_version }}
           files: ./dist/*.tar.gz

@@ -1,11 +1,11 @@
 # Building
 
 ```bash
-docker buildx build . \
-  --cache-to=type=local,dest=/tmp/buildx.cache \
-  --cache-from=type=local,src=/tmp/buildx.cache \
-  --build-arg=NODE_VERSION=18 \
-  --build-arg=ARCH=i386 \
+docker buildx build . 
+  --cache-to=type=local,dest=/tmp/buildx.cache 
+  --cache-from=type=local,src=/tmp/buildx.cache 
+  --build-arg=NODE_VERSION=18 
+  --build-arg=ARCH=amd64 
   --load -t libxmljs
 docker run --name libxmljs_build -d libxmljs
 docker cp libxmljs_build:/dist/ .

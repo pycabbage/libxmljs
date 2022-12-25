@@ -1,2 +1,9 @@
-/node_modules/
-/build/Release/
+node_modules/
+build/Release/
+.github/
+.git/
+build/
+node_modules/
+*.md
+Dockerfile
+.dockerignore
