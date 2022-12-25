@@ -5,7 +5,6 @@ ARG HOME=/home/$USER
 
 SHELL ["/bin/bash", "-o", "pipefail", "-e", "-u", "-c"]
 ENV DEBIAN_FRONTEND noninteractive
-# ENV BASH_ENV ~/.bashrc
 
 RUN apt update
 RUN apt install -y curl sudo python3 build-essential --no-install-recommends
@@ -24,7 +23,6 @@ ARG NVM_DIR=$HOME/.nvm
 ARG NODE_VERSION
 
 RUN source $NVM_DIR/nvm.sh && \
-  nvm cache clear && \
   nvm install $NODE_VERSION --latest-npm
 RUN source $NVM_DIR/nvm.sh && \
   npm i -g yarn@latest && \
