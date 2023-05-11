@@ -132,7 +132,7 @@ jobs:
       - name: Build
         run: |
           yarn build
-          yarn dist
+          yarn package
 
       - name: copy files
         run: |
