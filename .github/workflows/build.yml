@@ -129,6 +129,10 @@ jobs:
           npm i -g yarn@latest
           yarn install
 
+      - name: Set memory limit NODE_OPTIONS
+        if: startsWith(runner.os, 'windows') && matrix.osarch.arch == 'x86'
+        run: echo "NODE_OPTIONS=--max-old-space-size=7000" >> $GITHUB_ENV
+
       - name: Build
         run: |
           yarn build
