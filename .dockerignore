@@ -1,0 +1,11 @@
+node_modules/
+build/Release/
+.github/
+.git/
+build/
+node_modules/
+.yarn/cache/
+.yarn/unplugged/
+*.md
+Dockerfile
+.dockerignore
