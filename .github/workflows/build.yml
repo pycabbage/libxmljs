@@ -4,6 +4,10 @@ on:
   push:
     branches:
       - migrate
+    tags:
+      - "v*"
+    paths-ignore:
+      - "*.md"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}-${{ github.event }}
